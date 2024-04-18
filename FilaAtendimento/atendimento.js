@@ -52,7 +52,7 @@
     }
 
     toString() {
-        return `Nome: ${this._nome} - Data: ${this._data} - Hora: ${this._hora}`;
+        return `\nNome: ${this._nome} - Data: ${this._data} - Hora: ${this._hora}`;
       }
 }
   

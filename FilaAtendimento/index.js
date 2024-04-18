@@ -1,6 +1,6 @@
  // Crie uma instância da fila
  let minhaFila = new FilaCircular(6);
- let atendido;
+ let aten = new Atendimento(); 
 
  // Função para adicionar um elemento à fila
  function adicionarElemento() {
@@ -23,40 +23,54 @@
       console.log(newAtt);
       
      //enqueue atendimento na fila
-     if(minhaFila.enqueue(newAtt)===true){
-      console.log(minhaFila.toString());
-      document.getElementById("txtnovoNome").value = "";
-      document.getElementById("txtnovoCpf").value = "";
-      document.getElementById("txtnovoNome").focus(); 
-      atualizarFila();
-     }else{
-      alert("Filha cheia!");
-     }
+      if(minhaFila.enqueue(newAtt)===true){
+        console.log(minhaFila.toString());
+        document.getElementById("txtnovoNome").value = "";
+        document.getElementById("txtnovoCpf").value = "";
+        document.getElementById("txtnovoNome").focus(); 
+        mostrarFila();
+      }else{
+        alert("Filha cheia!");
+      }
+      if(minhaFila.isEmpty()){
+        document.getElementById("lblPessoasFila").innerText = "Fila Vazia!";
+      }else{
+        document.getElementById("lblPessoasFila").innerText = "Pessoas na Fila: ";
+      }
  }
 //--------------------------------------------------------------------------------------------
  // Função para remover o primeiro elemento da fila
  function removerElemento() {
       if(!minhaFila.isEmpty()){
-        atendido = minhaFila.dequeue();
-        atualizarFila();
+       let atendido = minhaFila.dequeue();
+        mostrarMensagemRemocao(atendido);
+        mostrarFila();
       }else{
         alert("Fila Vazia");
       }
  }
  //--------------------------------------------------------------------------------
  function buscarCpf() {
-    if(!minhaFila.isEmpty()){
-      if(newAtt.cpf === txtCPF){
-        alert(atendido);
+  if(!minhaFila.isEmpty()){
+    let busc = document.getElementById("txtnovoCpf").value;
+    let i = 0;  
+    for(let x of minhaFila){
+      if(x.cpf === busc){
+        alert("CPF encontrado na posição: "+i);
+        break;
       }
-    }else{
-      alert("Fila Vazia");
+      i++;
     }
+  }else{
+   alert("A fila está vazia");
+  }
 }
 //--------------------------------------------------------------------------------------------
 function mostrarMensagemRemocao(pessoaAtendida) {
-    this.atendido = pessoaAtendida;
-    alert(atendido+" foi atendido dia "+obterDataAtual()+" as "+obterHoraAtual());
+    aten = pessoaAtendida;
+    let horAg = obterHoraAtual();
+    let te = calcularDiferencaHoras(aten.hora, horAg);
+    document.getElementById("mensagem-remocao").textContent = "Chamado(a) para ser atendido: "+aten.nome+", chegou às "+aten.hora+" está sendo atendido(a) às "+obterHoraAtual()+". Tempo de espera de: "+te;
 }
 //--------------------------------------------------------------------------------------------
  // Função para atualizar a exibição da fila
@@ -94,6 +108,10 @@ function calcularDiferencaHoras(hora1, hora2) {
   const horas = Math.floor(diferencaSegundos / 3600);
   const minutos = Math.floor((diferencaSegundos % 3600) / 60);
   const segundos = diferencaSegundos % 60;
-  
+
   return `${horas.toString().padStart(2, '0')}:${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`;
+}
+function mostrarFila(){
+  const listaFila = document.getElementById("listFila");
+  listaFila.textContent = minhaFila.toString();
 }

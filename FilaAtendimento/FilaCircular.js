@@ -11,7 +11,7 @@ class FilaCircular{
     }
   //-------------------------------
     enqueue(elemento){
-        if(!this.qtd === this.elementos.length){
+        if(!(this.qtd === this.elementos.length)){
             if(this.fim === this.elementos.length-1)
                 this.fim = 0;
             else
@@ -70,7 +70,7 @@ class FilaCircular{
     toString(){
       let elementosFila = "";
       for (const elemento of this) 
-          elementosFila+=elemento.toString()+" \n";
+          elementosFila+=elemento.toString()+" | "+"\n";
       return elementosFila;
     }
     
